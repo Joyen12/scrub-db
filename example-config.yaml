@@ -1,0 +1,24 @@
+# Scrub-DB Configuration Example
+# This file shows how to configure custom anonymization rules
+
+# Auto-detect PII columns using smart pattern matching
+auto_detect: true
+
+# Preserve relationships - same input always produces same output
+# This is crucial for maintaining referential integrity
+preserve_relationships: true
+
+# Custom rules override auto-detection
+# Format: "table.column": "anonymization_type"
+custom_rules:
+  users.email: fake_email
+  users.first_name: fake_name
+  users.last_name: fake_name
+  users.phone_number: fake_phone
+  orders.credit_card_number: mask_credit_card
+
+  # You can also use 'hash' for any sensitive data
+  # users.api_key: hash
+
+  # Or 'skip' to explicitly not anonymize a column
+  # users.country: skip

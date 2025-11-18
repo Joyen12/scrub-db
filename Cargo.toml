@@ -1,0 +1,37 @@
+[package]
+name = "scrub-db"
+version = "0.1.0"
+edition = "2021"
+authors = ["Joyen12 <joyen12@gmail.com>"]
+description = "Manual database anonymization tool - Free version"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/joyen12/scrub-db"
+keywords = ["database", "anonymization", "pii", "gdpr", "privacy"]
+categories = ["command-line-utilities", "database"]
+
+# Library: Core anonymization engine (free)
+[lib]
+name = "scrub_db_core"
+path = "src/lib.rs"
+
+# Binary: Free CLI tool
+[[bin]]
+name = "scrub-db"
+path = "src/bin/scrub-db.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "postgres", "mysql", "sqlite"] }
+tokio = { version = "1", features = ["full"] }
+fake = { version = "2.9", features = ["derive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_yaml = "0.9"
+regex = "1.10"
+anyhow = "1.0"
+thiserror = "1.0"
+indicatif = "0.17"
+sha2 = "0.10"
+
+
+
+

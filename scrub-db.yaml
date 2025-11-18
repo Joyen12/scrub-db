@@ -1,0 +1,11 @@
+# Scrub-DB Configuration (Free Version)
+# Manual anonymization rules
+
+preserve_relationships: true
+
+custom_rules:
+  # Format: "pattern: anonymization_method"
+  # Available methods: fake_email, fake_name, fake_phone, fake_address, mask_credit_card, mask_ssn, hash, skip
+
+  email: fake_email
+  phone: fake_phone
