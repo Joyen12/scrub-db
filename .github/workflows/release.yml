@@ -1,0 +1,63 @@
+name: Release Binaries
+
+on:
+  push:
+    # Trigger this workflow ONLY when a tag (e.g., v0.2.0) is pushed
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  build_release:
+    name: Build ${{ matrix.os }} (${{ matrix.target_name }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        # Define the virtual environments, output names, and target triples
+        include:
+          - os: ubuntu-latest
+            target_name: linux-x86_64
+            target_triple: x86_64-unknown-linux-gnu
+          - os: macos-latest
+            target_name: macos-intel
+            target_triple: x86_64-apple-darwin
+          - os: macos-latest
+            target_name: macos-arm64
+            target_triple: aarch64-apple-darwin
+          - os: windows-latest
+            target_name: windows-x86_64.exe
+            target_triple: x86_64-pc-windows-msvc
+
+    steps:
+      - name: ⬇️ Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target_triple }}
+
+      - name: 🔨 Build Release Binary
+        run: cargo build --verbose --release --target ${{ matrix.target_triple }}
+
+      - name: 📦 Package and Rename Binary
+        shell: bash
+        run: |
+          # The binary is located in the target/<triple>/release directory
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            mv target/${{ matrix.target_triple }}/release/scrub-db.exe scrub-db-${{ matrix.target_name }}
+          else
+            mv target/${{ matrix.target_triple }}/release/scrub-db scrub-db-${{ matrix.target_name }}
+          fi
+
+      - name: 🚀 Publish to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            scrub-db-${{ matrix.target_name }}
+            LICENSE
+            NOTICE
+          name: Release ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

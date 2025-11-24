@@ -234,10 +234,10 @@ cargo test test_detect_postgres_from_sql
 - [x] Comprehensive test suite
 
 **Pro Version (In Development):**
-- [ ] Automatic PII detection (no config needed)
-- [ ] Live database connections (PostgreSQL, MySQL, SQLite)
+- [x] Automatic PII detection (no config needed)
+- [x] Live database connections (PostgreSQL, MySQL, SQLite)
 - [ ] Schema introspection
-- [ ] Database-to-database copying
+- [x] Database-to-database copying
 - [ ] Smart column name analysis
 - [ ] Advanced pattern matching
 - [ ] Cloud database support (AWS RDS, Google Cloud SQL)
